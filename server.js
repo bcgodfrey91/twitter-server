@@ -4,10 +4,10 @@ const express = require('express');
 var app = express();
 
 var twitter = new Twitter({
- 'consumerKey': '',
- 'consumerSecret': '',
- 'accessToken': '',
- 'accessTokenSecret': ''
+ "consumerKey": "",
+ "consumerSecret": "",
+ "accessToken": "",
+ "accessTokenSecret": ""
 });
 
 app.set('port', process.env.PORT || 3001);
@@ -16,9 +16,9 @@ app.listen(app.get('port'), () => {
  console.log(`listening on ${app.get('port')}`);
 });
 
-const getTweetsForUser = (username, numberOfTweets, callback) => {
- twitter.getTimeline('user_timeline',
-   {'screen_name': username ,'count': numberOfTweets},
+const getTweetsForUser = (hashtag, numberOfTweets, callback) => {
+ twitter.search(
+   {"q": hashtag, "count": numberOfTweets},
    twitter.accessToken,
    twitter.accessTokenSecret,
    callback
@@ -26,9 +26,15 @@ const getTweetsForUser = (username, numberOfTweets, callback) => {
 };
 
 
-app.get('/api/tweets-for-user/:username', function(req, res) {
- const numberOfTweets = req.query.count || 3;
- getTweetsForUser(req.params.username, numberOfTweets, (error, data) => {
-   res.send(data);
+app.get('/api/tweets-for-hashtag/:hashtag', function(req, res) {
+ const numberOfTweets = req.query.count || 100;
+ getTweetsForUser(req.params.hashtag, numberOfTweets, (error, data, response) => {
+   if (error) {
+     return res.send({
+       error: error
+     });
+   } else {
+     res.send({ data: data.statuses });
+  }
  });
 });
