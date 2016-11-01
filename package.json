@@ -17,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/bcgodfrey91/twitter-server/issues"
   },
-  "homepage": "https://github.com/bcgodfrey91/twitter-server#readme"
+  "homepage": "https://github.com/bcgodfrey91/twitter-server#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "node-twitter-api": "^1.8.0"
+  }
 }
